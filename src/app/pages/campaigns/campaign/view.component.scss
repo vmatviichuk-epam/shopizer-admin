@@ -1,0 +1,265 @@
+.view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.back-btn {
+  padding: 0;
+  color: #8f9bb3;
+  font-size: 13px;
+  margin-bottom: 8px;
+  display: block;
+  text-decoration: none;
+}
+
+.header-badges {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.campaign-desc {
+  color: #8f9bb3;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+// KPI
+.kpi-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.kpi-card {
+  flex: 1;
+  background: #f7f9fc;
+  border: 1px solid #edf1f7;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #222b45;
+}
+
+.kpi-label {
+  font-size: 11px;
+  color: #8f9bb3;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+// Details
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222b45;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #edf1f7;
+}
+
+.detail-section {
+  background: #fff;
+  border: 1px solid #edf1f7;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f7f9fc;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.detail-label {
+  color: #8f9bb3;
+  font-size: 13px;
+}
+
+.detail-value {
+  font-weight: 600;
+  font-size: 13px;
+  color: #222b45;
+}
+
+.discount-text {
+  color: #ff3d71;
+}
+
+.category-tag {
+  display: inline-block;
+  background: #e6f0ff;
+  color: #3366ff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-left: 4px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+// A/B Variants
+.ab-variants {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.variant-card {
+  border: 1px solid #edf1f7;
+  border-radius: 6px;
+  padding: 14px;
+}
+
+.variant-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.variant-label {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  color: #fff;
+
+  .variant-a & { background: #3366ff; }
+  .variant-b & { background: #00d68f; }
+}
+
+.variant-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #222b45;
+}
+
+.variant-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 8px;
+}
+
+.variant-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.vs-value {
+  font-weight: 700;
+  font-size: 16px;
+  color: #222b45;
+}
+
+.vs-label {
+  font-size: 11px;
+  color: #8f9bb3;
+}
+
+.variant-bar {
+  height: 6px;
+  background: #f0f0f5;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+
+  &.bar-a { background: #3366ff; }
+  &.bar-b { background: #00d68f; }
+}
+
+// Customers table
+.customers-section {
+  margin-top: 8px;
+}
+
+.customers-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #8f9bb3;
+    border-bottom: 2px solid #edf1f7;
+  }
+
+  td {
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #222b45;
+    border-bottom: 1px solid #f7f9fc;
+  }
+
+  tr:hover td {
+    background: #f7f9fc;
+  }
+}
+
+.variant-badge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+
+  &.variant-badge-a {
+    background: #e6f0ff;
+    color: #3366ff;
+  }
+
+  &.variant-badge-b {
+    background: #e6faf0;
+    color: #00d68f;
+  }
+}
+
+// Badges (shared)
+.badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-success { background: #e6faf0; color: #00b887; }
+.badge-secondary { background: #f0f0f5; color: #8f9bb3; }
+.badge-warning { background: #fff8e6; color: #ffaa00; }
+.badge-info { background: #e6f0ff; color: #3366ff; }
+.badge-outline { background: transparent; border: 1px solid #e4e9f2; color: #8f9bb3; }

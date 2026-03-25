@@ -9,43 +9,42 @@ import { environment } from '../../environments/environment';
  * other admins
  */
 
+const getRoles = () => {
+  const roles = localStorage.getItem('roles');
+  return roles ? JSON.parse(roles) : {};
+};
+
 const IsAccessToOrder = () => {
-  return (JSON.parse(localStorage.getItem('roles'))).canAccessToOrder;
+  return getRoles().canAccessToOrder;
 };
 
 const IsSuperadmin = () => {
-  return (JSON.parse(localStorage.getItem('roles'))).isSuperadmin;
+  return getRoles().isSuperadmin;
 };
 
 const IsAdmin = () => {
-  if (
-    (JSON.parse(localStorage.getItem('roles'))).isAdmin ||
-    (JSON.parse(localStorage.getItem('roles'))).isAdminRetail
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+  const roles = getRoles();
+  return roles.isAdmin || roles.isAdminRetail || false;
 };
 
 const IsAdminCatalogue = () => {
-  return (JSON.parse(localStorage.getItem('roles'))).isAdminCatalogue;
+  return getRoles().isAdminCatalogue;
 };
 
 const IsAdminStore = () => {
-  return (JSON.parse(localStorage.getItem('roles'))).isAdminStore;
+  return getRoles().isAdminStore;
 };
 
 const IsAdminOrder = () => {
-  return (JSON.parse(localStorage.getItem('roles'))).isAdminOrder;
+  return getRoles().isAdminOrder;
 };
 
 const IsAdminContent = () => {
-  return (JSON.parse(localStorage.getItem('roles'))).isAdminContent;
+  return getRoles().isAdminContent;
 };
 
 const IsCustomer = () => {
-  return (JSON.parse(localStorage.getItem('roles'))).isCustomer;
+  return getRoles().isCustomer;
 };
 
 const isCategoryManagementVisible = () => {
@@ -64,28 +63,13 @@ const isCategoryManagementVisible = () => {
 }
 
 const IsAdminRetail = () => {
-  if (
-    JSON.parse(localStorage.getItem('roles')).isSuperadmin ||
-    JSON.parse(localStorage.getItem('roles')).isAdminRetail ||
-    JSON.parse(localStorage.getItem('roles')).isAdmin
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+  const roles = getRoles();
+  return roles.isSuperadmin || roles.isAdminRetail || roles.isAdmin || false;
 };
 
 const IsOrderManagementVisible = () => {
-  if (
-    (JSON.parse(localStorage.getItem('roles'))).isSuperadmin ||
-    (JSON.parse(localStorage.getItem('roles'))).isAdminRetail ||
-    (JSON.parse(localStorage.getItem('roles'))).isAdminOrder ||
-    (JSON.parse(localStorage.getItem('roles'))).isAdmin
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+  const roles = getRoles();
+  return roles.isSuperadmin || roles.isAdminRetail || roles.isAdminOrder || roles.isAdmin || false;
 };
 
 export const MENU_ITEMS: MenuItem[] = [
@@ -462,6 +446,25 @@ export const MENU_ITEMS: MenuItem[] = [
       //   key: 'COMPONENTS.MANAGE_OPTIONS',
       //   link: '/pages/customer/manage/list',
       // }
+    ]
+  },
+  {
+    title: 'Campaigns',
+    key: 'CAMPAIGNS',
+    icon: 'flash',
+    children: [
+      {
+        title: 'Campaign List',
+        key: 'CAMPAIGNS.LIST',
+        link: '/pages/campaigns/list',
+        hidden: false,
+      },
+      {
+        title: 'Create Campaign',
+        key: 'CAMPAIGNS.CREATE',
+        link: '/pages/campaigns/create',
+        hidden: false,
+      }
     ]
   },
   // {

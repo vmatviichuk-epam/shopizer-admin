@@ -1,0 +1,92 @@
+<nb-card class="page-card inner_pages">
+  <nb-card-body [nbSpinner]="loadingList" nbSpinnerSize="large" nbSpinnerStatus="primary">
+    <div class="inner_pages_legacy">
+      <nb-card-header class="main_header">
+        <h1 class="page_title">Campaigns</h1>
+        <div class="content_spacing_empty"></div>
+      </nb-card-header>
+
+      <div class="campaign-toolbar">
+        <div class="toolbar-left">
+          <span class="campaign-count">{{ campaigns.length }} campaigns</span>
+        </div>
+        <div class="toolbar-right">
+          <button class="btn btn-primary" (click)="createCampaign()">
+            + Create Campaign
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Summary -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-value">{{ campaigns.length }}</div>
+          <div class="stat-label">Total Campaigns</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value active-color">{{ (campaigns | campaignFilter:'ACTIVE').length }}</div>
+          <div class="stat-label">Active</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ (campaigns | campaignFilter:'AB_TEST').length }}</div>
+          <div class="stat-label">A/B Tests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">39</div>
+          <div class="stat-label">Customers Targeted</div>
+        </div>
+      </div>
+
+      <!-- Campaign Cards -->
+      <div class="campaign-list">
+        <div class="campaign-card" *ngFor="let campaign of campaigns" (click)="viewCampaign(campaign.id)">
+          <div class="campaign-card-header">
+            <div class="campaign-title-section">
+              <h3 class="campaign-name">{{ campaign.name }}</h3>
+              <span class="badge" [ngClass]="getStatusClass(campaign.status)">{{ campaign.status }}</span>
+              <span class="badge badge-outline">{{ getTypeLabel(campaign.type) }}</span>
+            </div>
+            <div class="campaign-actions" (click)="$event.stopPropagation()">
+              <button class="btn btn-sm btn-outline-primary" (click)="editCampaign(campaign.id)" title="Edit">
+                <i class="nb-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary" (click)="duplicateCampaign(campaign)" title="Duplicate">
+                <i class="nb-loop-circled"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteCampaign(campaign)" title="Delete">
+                <i class="nb-trash"></i>
+              </button>
+            </div>
+          </div>
+          <p class="campaign-description">{{ campaign.description }}</p>
+          <div class="campaign-meta">
+            <div class="meta-item">
+              <span class="meta-label">Segment</span>
+              <span class="meta-value">{{ campaign.customerGroup }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Customers</span>
+              <span class="meta-value">{{ campaign.customersCount }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Discount</span>
+              <span class="meta-value discount-value">{{ campaign.discount }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Categories</span>
+              <span class="meta-value">{{ campaign.categories.join(', ') }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Period</span>
+              <span class="meta-value">{{ campaign.startDate }} → {{ campaign.endDate }}</span>
+            </div>
+            <div class="meta-item" *ngIf="campaign.conversionRate !== null">
+              <span class="meta-label">Conversion</span>
+              <span class="meta-value conversion-value">{{ campaign.conversionRate }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

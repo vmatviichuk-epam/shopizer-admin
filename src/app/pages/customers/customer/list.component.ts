@@ -25,6 +25,35 @@ export class ListComponent implements OnInit {
   selectedStore: String = '';
   searchValue: string = '';
   params = this.loadParams();
+
+  // Dummy campaign assignments for prototype
+  private campaignAssignments: { [customerId: number]: string } = {
+    1: 'Summer Sale 2026',
+    78: 'Summer Sale 2026',
+    79: 'New Customer Welcome',
+    80: 'Summer Sale 2026',
+    81: 'New Customer Welcome',
+    82: 'Summer Sale 2026',
+    83: 'New Customer Welcome',
+    84: 'Summer Sale 2026',
+    85: 'New Customer Welcome',
+    86: 'Win-back Inactive Users',
+    87: 'Summer Sale 2026',
+    88: 'Win-back Inactive Users',
+    89: 'New Customer Welcome',
+    90: 'Win-back Inactive Users',
+    91: 'Summer Sale 2026',
+    92: 'Wholesale Tier Pricing',
+    93: 'New Customer Welcome',
+    94: 'Wholesale Tier Pricing',
+    95: 'Win-back Inactive Users',
+    96: 'Wholesale Tier Pricing',
+    97: 'Summer Sale 2026',
+    98: 'New Customer Welcome',
+    99: 'Holiday Pre-Sale',
+    100: 'Holiday Pre-Sale',
+    101: 'Holiday Pre-Sale',
+  };
   constructor(
     private customersService: CustomersService,
     public router: Router,
@@ -69,7 +98,11 @@ export class ListComponent implements OnInit {
     this.customersService.getCustomers(this.params)
       .subscribe(customer => {
         this.loadingList = false;
-        this.source.load(customer.customers);
+        const enriched = customer.customers.map(c => ({
+          ...c,
+          campaign: this.campaignAssignments[c.id] || '—'
+        }));
+        this.source.load(enriched);
         this.totalCount = customer.totalPages;
       }, error => {
         this.errorService.error('ERROR.SYSTEM_ERROR', error);
@@ -121,6 +154,23 @@ export class ListComponent implements OnInit {
         emailAddress: {
           title: this.translate.instant('USER_FORM.EMAIL_ADDRESS'),
           type: 'string'
+        },
+        campaign: {
+          title: 'Campaign',
+          type: 'html',
+          filter: false,
+          valuePrepareFunction: (value) => {
+            if (!value || value === '—') return '<span style="color:#c5cee0">—</span>';
+            const colors = {
+              'Summer Sale 2026': '#00d68f',
+              'New Customer Welcome': '#3366ff',
+              'Win-back Inactive Users': '#ffaa00',
+              'Wholesale Tier Pricing': '#ff3d71',
+              'Holiday Pre-Sale': '#8f5ee8'
+            };
+            const color = colors[value] || '#8f9bb3';
+            return `<span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;background:${color}20;color:${color}">${value}</span>`;
+          }
         }
       },
     };

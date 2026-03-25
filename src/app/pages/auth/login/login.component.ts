@@ -106,6 +106,34 @@ export class LoginComponent implements OnInit {
       }, err => {
         if (err.status === 0) {
           this.errorMessage = this.translate.instant('COMMON.INTERNAL_SERVER_ERROR');
+        } else if (err.status === 403 && err.error && err.error.reason) {
+          // Handle password policy enforcement
+          const reason = err.error.reason;
+          const userId = err.error.userId;
+
+          if (reason === 'WEAK_PASSWORD' || reason === 'LEGACY_USER' || reason === 'PASSWORD_EXPIRED') {
+            // Store user ID for password change
+            localStorage.setItem('passwordChangeUserId', userId);
+
+            // Show appropriate message
+            let message = 'Your password needs to be changed.';
+            if (reason === 'WEAK_PASSWORD') {
+              message = 'Your password does not meet security requirements. Please change it.';
+            } else if (reason === 'PASSWORD_EXPIRED') {
+              message = 'Your password has expired. Please change it.';
+            }
+
+            this.toastr.warning(message);
+            this.loading = false;
+
+            // Redirect to password change page after a short delay
+            setTimeout(() => {
+              this.router.navigate(['auth/mandatory-password-change']);
+            }, 1000);
+            return;
+          }
+
+          this.errorMessage = this.translate.instant('LOGIN.INVALID_DATA');
         } else {
           this.errorMessage = this.translate.instant('LOGIN.INVALID_DATA');
         }

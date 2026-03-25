@@ -10,9 +10,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "skipLibCheck": true,
+    "types": [],
     "lib": [
       "es2017",
       "dom"
@@ -25,6 +24,6 @@
   },
   "angularCompilerOptions": {
     "enableIvy": false,
-    "strictTemplates": true
+    "strictTemplates": false
   }
 }

@@ -1,0 +1,156 @@
+<nb-card class="page-card inner_pages">
+  <nb-card-body>
+    <div class="inner_pages_legacy">
+      <!-- Header -->
+      <div class="view-header">
+        <div class="header-left">
+          <button class="btn btn-link back-btn" (click)="goBack()">← Back to Campaigns</button>
+          <h1 class="page_title">{{ campaign.name }}</h1>
+          <div class="header-badges">
+            <span class="badge" [ngClass]="getStatusClass(campaign.status)">{{ campaign.status }}</span>
+            <span class="badge badge-outline">{{ campaign.type === 'AB_TEST' ? 'A/B Test' : 'Discount' }}</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-outline-warning" (click)="pauseCampaign()">Pause</button>
+          <button class="btn btn-primary" (click)="editCampaign()">Edit Campaign</button>
+        </div>
+      </div>
+
+      <p class="campaign-desc">{{ campaign.description }}</p>
+
+      <!-- KPI Cards -->
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-value">${{ campaign.totalRevenue | number }}</div>
+          <div class="kpi-label">Total Revenue</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">{{ campaign.totalOrders }}</div>
+          <div class="kpi-label">Orders</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">{{ campaign.conversionRate }}%</div>
+          <div class="kpi-label">Conversion Rate</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">{{ campaign.customers.length }}</div>
+          <div class="kpi-label">Customers</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">{{ campaign.discount }}%</div>
+          <div class="kpi-label">Discount</div>
+        </div>
+      </div>
+
+      <!-- Campaign Details -->
+      <div class="details-grid">
+        <div class="detail-section">
+          <h3 class="section-title">Campaign Details</h3>
+          <div class="detail-row">
+            <span class="detail-label">Period</span>
+            <span class="detail-value">{{ campaign.startDate }} → {{ campaign.endDate }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Customer Segment</span>
+            <span class="detail-value">{{ campaign.customerGroup }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Target Categories</span>
+            <span class="detail-value">
+              <span class="category-tag" *ngFor="let cat of campaign.categories">{{ cat }}</span>
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Discount</span>
+            <span class="detail-value discount-text">{{ campaign.discount }}% off</span>
+          </div>
+        </div>
+
+        <!-- A/B Test Results -->
+        <div class="detail-section" *ngIf="campaign.type === 'DISCOUNT'">
+          <h3 class="section-title">A/B Test Variants</h3>
+          <div class="ab-variants">
+            <div class="variant-card variant-a">
+              <div class="variant-header">
+                <span class="variant-label">A</span>
+                <span class="variant-name">{{ campaign.abVariants.A.label }}</span>
+              </div>
+              <div class="variant-stats">
+                <div class="variant-stat">
+                  <span class="vs-value">{{ campaign.abVariants.A.customers }}</span>
+                  <span class="vs-label">Customers</span>
+                </div>
+                <div class="variant-stat">
+                  <span class="vs-value">{{ campaign.abVariants.A.conversions }}</span>
+                  <span class="vs-label">Conversions</span>
+                </div>
+                <div class="variant-stat">
+                  <span class="vs-value">${{ campaign.abVariants.A.revenue | number }}</span>
+                  <span class="vs-label">Revenue</span>
+                </div>
+              </div>
+              <div class="variant-bar">
+                <div class="bar-fill bar-a" style="width: 62%"></div>
+              </div>
+            </div>
+            <div class="variant-card variant-b">
+              <div class="variant-header">
+                <span class="variant-label">B</span>
+                <span class="variant-name">{{ campaign.abVariants.B.label }}</span>
+              </div>
+              <div class="variant-stats">
+                <div class="variant-stat">
+                  <span class="vs-value">{{ campaign.abVariants.B.customers }}</span>
+                  <span class="vs-label">Customers</span>
+                </div>
+                <div class="variant-stat">
+                  <span class="vs-value">{{ campaign.abVariants.B.conversions }}</span>
+                  <span class="vs-label">Conversions</span>
+                </div>
+                <div class="variant-stat">
+                  <span class="vs-value">${{ campaign.abVariants.B.revenue | number }}</span>
+                  <span class="vs-label">Revenue</span>
+                </div>
+              </div>
+              <div class="variant-bar">
+                <div class="bar-fill bar-b" style="width: 38%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assigned Customers -->
+      <div class="customers-section">
+        <h3 class="section-title">Assigned Customers ({{ campaign.customers.length }})</h3>
+        <table class="customers-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Variant</th>
+              <th>Orders</th>
+              <th>Spent</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of campaign.customers">
+              <td>{{ c.id }}</td>
+              <td>{{ c.name }}</td>
+              <td>{{ c.email }}</td>
+              <td><span class="variant-badge variant-badge-{{ c.variant | lowercase }}">{{ c.variant }}</span></td>
+              <td>{{ c.orders }}</td>
+              <td>${{ c.spent | number }}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-danger" (click)="removeCustomer(c)">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

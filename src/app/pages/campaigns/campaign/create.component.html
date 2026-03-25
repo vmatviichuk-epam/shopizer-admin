@@ -1,0 +1,146 @@
+<nb-card class="page-card inner_pages">
+  <nb-card-body>
+    <div class="inner_pages_legacy">
+      <div class="form-header">
+        <button class="btn btn-link back-btn" (click)="cancel()">← Back to Campaigns</button>
+        <h1 class="page_title">{{ isEdit ? 'Edit Campaign' : 'Create Campaign' }}</h1>
+      </div>
+
+      <form class="campaign-form">
+        <!-- Basic Info -->
+        <div class="form-section">
+          <h3 class="section-title">Basic Information</h3>
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label>Campaign Name *</label>
+              <input type="text" class="form-control" [(ngModel)]="campaign.name" name="name"
+                placeholder="e.g. Summer Sale 2026">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label>Description</label>
+              <textarea class="form-control" [(ngModel)]="campaign.description" name="description" rows="3"
+                placeholder="Describe the campaign purpose and goals..."></textarea>
+            </div>
+          </div>
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label>Campaign Type *</label>
+              <select class="form-control" [(ngModel)]="campaign.type" name="type">
+                <option value="DISCOUNT">Discount Campaign</option>
+                <option value="AB_TEST">A/B Test</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select class="form-control" [(ngModel)]="campaign.status" name="status">
+                <option value="DRAFT">Draft</option>
+                <option value="SCHEDULED">Scheduled</option>
+                <option value="ACTIVE">Active</option>
+                <option value="PAUSED">Paused</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label>Start Date *</label>
+              <input type="date" class="form-control" [(ngModel)]="campaign.startDate" name="startDate">
+            </div>
+            <div class="form-group">
+              <label>End Date *</label>
+              <input type="date" class="form-control" [(ngModel)]="campaign.endDate" name="endDate">
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer Segment -->
+        <div class="form-section">
+          <h3 class="section-title">Customer Segment</h3>
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label>Assign to Customer Group *</label>
+              <select class="form-control" [(ngModel)]="campaign.customerGroup" name="customerGroup">
+                <option value="">Select a customer group...</option>
+                <option *ngFor="let g of customerGroups" [value]="g.id">
+                  {{ g.name }} ({{ g.count }} customers)
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="segment-hint">
+            Customers in the selected group will automatically be enrolled in this campaign.
+          </div>
+        </div>
+
+        <!-- Discount Configuration -->
+        <div class="form-section">
+          <h3 class="section-title">Discount Configuration</h3>
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label>Discount Type</label>
+              <select class="form-control" [(ngModel)]="campaign.discountType" name="discountType">
+                <option value="PERCENTAGE">Percentage (%)</option>
+                <option value="FIXED">Fixed Amount ($)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Discount Value (Variant A) *</label>
+              <input type="number" class="form-control" [(ngModel)]="campaign.discountValue" name="discountValue"
+                [placeholder]="campaign.discountType === 'PERCENTAGE' ? 'e.g. 20' : 'e.g. 10.00'">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label>Apply to Categories *</label>
+              <div class="category-selector">
+                <div class="category-chip" *ngFor="let cat of availableCategories"
+                  [class.selected]="isCategorySelected(cat.id)" (click)="toggleCategory(cat.id)">
+                  <span class="chip-check" *ngIf="isCategorySelected(cat.id)">✓</span>
+                  {{ cat.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- A/B Testing -->
+        <div class="form-section" *ngIf="campaign.type === 'AB_TEST'">
+          <h3 class="section-title">A/B Test Configuration</h3>
+          <div class="ab-info">
+            Customers will be randomly split between Variant A (discount above) and Variant B (selected below).
+          </div>
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label>Variant B Offer</label>
+              <select class="form-control" [(ngModel)]="campaign.variantBType" name="variantBType">
+                <option *ngFor="let opt of variantBOptions" [value]="opt.value">{{ opt.label }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="split-preview">
+            <div class="split-variant split-a">
+              <strong>Variant A (50%)</strong>
+              <span>{{ campaign.discountType === 'PERCENTAGE' ? campaign.discountValue + '% off' : '$' + campaign.discountValue + ' off' }}</span>
+            </div>
+            <div class="split-divider">vs</div>
+            <div class="split-variant split-b">
+              <strong>Variant B (50%)</strong>
+              <span>{{ campaign.variantBType === 'FREE_SHIPPING' ? 'Free Shipping' : campaign.variantBType === 'DOUBLE_POINTS' ? 'Double Points' : campaign.variantBType === 'GIFT_ITEM' ? 'Free Gift' : 'Half Discount' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+          <button class="btn btn-outline-primary" (click)="saveAsDraft()">Save as Draft</button>
+          <button class="btn btn-primary" (click)="saveCampaign()">
+            {{ isEdit ? 'Update Campaign' : 'Create Campaign' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </nb-card-body>
+</nb-card>

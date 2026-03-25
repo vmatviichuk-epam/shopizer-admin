@@ -34,6 +34,10 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
         if (error.status == 0) {
           this.router.navigate(['errorPage']);
         }
+        // Allow 403 errors on login to pass through for password policy handling
+        if (error.status === 403 && req.url.search(/login/gi) !== -1) {
+          return throwError(error);
+        }
         if (error.status === 404 && req.url.search(/login/gi) !== -1) {
         } else if (error.status !== 401) {
           if (error.error instanceof ErrorEvent) {

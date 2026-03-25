@@ -55,6 +55,10 @@ const routes: Routes = [{
       loadChildren: 'app/pages/customers/customer.module#CustomersModule'
     },
     {
+      path: 'campaigns',
+      loadChildren: 'app/pages/campaigns/campaigns.module#CampaignsModule'
+    },
+    {
       path: 'error-500',
       component: FiveHundredComponent
     },
